@@ -55,6 +55,7 @@ export const EMPTY_FILTERS: PanelFilters = {
   stateTypes: [],
   assigneeIds: [],
   labelIds: [],
+  projectIds: [],
   priorities: [],
   // True, because these are the ALL ISSUES segment's defaults and a segment
   // named "All issues" that silently hides every Done row is a label lying
@@ -179,7 +180,7 @@ export const chrome = {
     commit({ ...state, filters });
   },
 
-  toggleFacet(facet: "stateIds" | "stateTypes" | "assigneeIds" | "labelIds", id: string): void {
+  toggleFacet(facet: "stateIds" | "stateTypes" | "assigneeIds" | "labelIds" | "projectIds", id: string): void {
     const current = state.filters[facet];
     const next = current.includes(id)
       ? current.filter((entry) => entry !== id)
@@ -237,6 +238,7 @@ export function hasActiveFilters(value: ChromeState): boolean {
     value.filters.stateTypes.length > 0 ||
     value.filters.assigneeIds.length > 0 ||
     value.filters.labelIds.length > 0 ||
+    value.filters.projectIds.length > 0 ||
     value.filters.priorities.length > 0 ||
     value.filters.includeCompleted
   );

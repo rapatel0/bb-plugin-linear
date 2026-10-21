@@ -208,6 +208,22 @@ export function LinearPanelHeader() {
             </>
           ) : null}
 
+          {facets.status === "ready" && facets.value.projects.length > 0 ? (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>Project</DropdownMenuLabel>
+              {facets.value.projects.map((entry) => (
+                <DropdownMenuCheckboxItem
+                  key={entry.id}
+                  checked={state.filters.projectIds.includes(entry.id)}
+                  onCheckedChange={() => chrome.toggleFacet("projectIds", entry.id)}
+                >
+                  {entry.name}
+                </DropdownMenuCheckboxItem>
+              ))}
+            </>
+          ) : null}
+
           {facets.status === "ready" && facets.value.members.some((member) => member.isMe) ? (
             <>
               <DropdownMenuSeparator />

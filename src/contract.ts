@@ -252,6 +252,7 @@ export const panelFiltersSchema = z.object({
   stateTypes: z.array(z.string()).default([]),
   assigneeIds: z.array(z.string()).default([]),
   labelIds: z.array(z.string()).default([]),
+  projectIds: z.array(z.string()).default([]),
   priorities: z.array(z.number()).default([]),
   /** Off by default: the panel's baseline is open work. */
   includeCompleted: z.boolean().default(false),
@@ -281,6 +282,7 @@ export const panelQuerySchema = z.object({
     stateTypes: [],
     assigneeIds: [],
     labelIds: [],
+    projectIds: [],
     priorities: [],
     includeCompleted: false,
   }),
@@ -724,6 +726,7 @@ export const facetsSchema = z.object({
   ),
   members: z.array(assigneeViewSchema.extend({ isMe: z.boolean() })),
   priorities: z.array(z.object({ priority: z.number(), label: z.string() })),
+  projects: z.array(z.object({ id: z.string(), name: z.string() })),
 });
 export type Facets = z.infer<typeof facetsSchema>;
 

@@ -28,6 +28,7 @@ const NO_FILTERS: PanelFilters = {
   stateTypes: [],
   assigneeIds: [],
   labelIds: [],
+  projectIds: [],
   priorities: [],
   includeCompleted: false,
 };

@@ -119,6 +119,7 @@ export function buildPanelView(deps: PanelDeps, query: PanelQuery): PanelView {
     stateTypes: query.filters.stateTypes,
     assigneeIds: query.filters.assigneeIds,
     labelIds: query.filters.labelIds,
+    projectIds: query.filters.projectIds,
     priorities: query.filters.priorities,
     includeCompleted: query.filters.includeCompleted,
     text: query.search,
@@ -295,6 +296,14 @@ function describeActiveFacets(
     const byId = new Map(store.labels(teamIds).map((label) => [label.id, label.name]));
     for (const labelId of query.filters.labelIds) {
       const name = byId.get(labelId);
+      if (name !== undefined) facets.push(name);
+    }
+  }
+
+  if (query.filters.projectIds.length > 0) {
+    const byId = new Map(store.projects(teamIds).map((project) => [project.id, project.name]));
+    for (const projectId of query.filters.projectIds) {
+      const name = byId.get(projectId);
       if (name !== undefined) facets.push(name);
     }
   }
@@ -581,6 +590,10 @@ export function buildFacets(deps: PanelDeps, team: string | null): Facets {
       priority: value.priority,
       label: value.label,
     })),
+    projects: deps.store
+      .projects(teamIds)
+      .map((project) => ({ id: project.id, name: project.name }))
+      .sort((a, b) => a.name.localeCompare(b.name)),
   };
 }
 
