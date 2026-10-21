@@ -162,6 +162,10 @@ export function issueNeedsRefresh(issue: IssueRow): boolean {
 export const UNBOUND_INSTRUCTION =
   "This bb project isn't bound to a Linear team, so Linear tools are unavailable here. Use the Linear panel's Bind button or run `bb linear bind TEAM-KEY`. `linear_thread_bind` remains available for linking a thread after the project has a team.";
 
+// Temporary local scope: only the HL Pilot project is of interest on this
+// machine. The sync documents carry the same id; remove both together.
+const HL_PILOT_PROJECT_ID = "6c789011-bf4e-4bbf-aa20-8027e1438436";
+
 export function registerTools(bb: BbPluginApi, deps: ToolDeps): void {
   const context = (
     teamIds: readonly string[],
@@ -591,8 +595,10 @@ export function registerTools(bb: BbPluginApi, deps: ToolDeps): void {
     execute: (_params, ctx) => {
       const current = scope(ctx.projectId);
       if (current.readTeamIds.length === 0) return UNBOUND_INSTRUCTION;
-      const projects = deps.store.projects(current.readTeamIds);
-      if (projects.length === 0) return "The bound teams have no projects.";
+      const projects = deps.store
+        .projects(current.readTeamIds)
+        .filter((entry) => entry.id === HL_PILOT_PROJECT_ID);
+      if (projects.length === 0) return "The bound teams have no projects."
 
       const statuses = new Map(deps.store.projectStatuses(current.readTeamIds).map((entry) => [entry.id, entry.name]));
       const members = new Map(

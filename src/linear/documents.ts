@@ -418,6 +418,7 @@ export const ISSUES_BACKFILL = doc(
     filter: {
       team: { id: { in: $teamIds } }
       state: { type: { nin: ["completed", "canceled"] } }
+      project: { id: { eq: "6c789011-bf4e-4bbf-aa20-8027e1438436" } }
     }
   ) {
     nodes {
@@ -964,7 +965,7 @@ export const TICK = doc(
     after: $issuesAfter
     orderBy: updatedAt
     includeArchived: true
-    filter: { team: { id: { in: $teamIds } }, updatedAt: { gt: $issuesSince } }
+    filter: { team: { id: { in: $teamIds } }, project: { id: { eq: "6c789011-bf4e-4bbf-aa20-8027e1438436" } }, updatedAt: { gt: $issuesSince } }
   ) {
     nodes {
       ...IssueFields
@@ -1002,7 +1003,7 @@ export const TICK = doc(
     after: $commentsAfter
     orderBy: updatedAt
     filter: {
-      issue: { team: { id: { in: $teamIds } } }
+      issue: { team: { id: { in: $teamIds } }, project: { id: { eq: "6c789011-bf4e-4bbf-aa20-8027e1438436" } } }
       updatedAt: { gt: $commentsSince }
     }
   ) {
@@ -1604,7 +1605,7 @@ export const SEARCH_ISSUES = doc(
   searchIssues(
     term: $term
     first: $first
-    filter: { team: { id: { in: $teamIds } } }
+    filter: { team: { id: { in: $teamIds } }, project: { id: { eq: "6c789011-bf4e-4bbf-aa20-8027e1438436" } } }
   ) {
     nodes {
       ...SearchResultFields
