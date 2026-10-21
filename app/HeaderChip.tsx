@@ -1,6 +1,7 @@
 import { useCallback, type CSSProperties } from "react";
 import { useBbNavigate, useRealtime } from "@bb/plugin-sdk/app";
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { useAsync, useLinearRpc } from "./rpc.js";
 import { StateGlyph } from "./StateGlyph.js";
 import { toneClass } from "../src/select/tone.js";
@@ -15,8 +16,9 @@ import { toneClass } from "../src/select/tone.js";
  *  - **Suggested** — the fuzzy rung's candidate, drawn as a question
  *    ("LIN-3?") in muted chrome. Click accepts, which *is* a manual binding
  *    and records itself as one.
- *  - **Nothing to say** — renders nothing. An empty affordance in every
- *    thread header would be chrome for chrome's sake.
+ *  - **Nothing to say** — a quiet icon button opening the Linear panel, so
+ *    the panel's filters (project, state, search) stay one click away even
+ *    on threads with no Linear work.
  */
 export function HeaderChip({ threadId }: { threadId: string; projectId: string | null; isCompactViewport: boolean }) {
   const rpc = useLinearRpc();
@@ -62,5 +64,18 @@ export function HeaderChip({ threadId }: { threadId: string; projectId: string |
       </Button>
     );
   }
-  return null;
+
+  return (
+    <Button
+      size="sm"
+      variant="ghost"
+      className="bbl-header-panel h-7 w-7 justify-center px-0 text-muted-foreground"
+      aria-label="Open the Linear panel"
+      onClick={() => {
+        navigate.toPluginPanel("linear", { subPath: "" });
+      }}
+    >
+      <Icon name="Layers" className="size-4" aria-hidden />
+    </Button>
+  );
 }
